@@ -2,6 +2,8 @@
 
 namespace UcanLab\LaravelDacapo\Migrations\Schema;
 
+use Illuminate\Support\Str;
+
 class Relation
 {
     private $name;
@@ -16,10 +18,10 @@ class Relation
      */
     public function __construct(array $attributes)
     {
-        $this->name = $attributes['name'] ?? null;
-        $this->foreign = $attributes['foreign'];
-        $this->references = $attributes['references'] ?? 'id';
-        $this->on = $attributes['on'];
+        $this->name = $attributes['name'] ?? 'FK_'. uniqid(rand());
+        $this->foreign = $attributes['joinColumn']['name'];
+        $this->references = $attributes['joinColumn']['referencedColumnName'] ?? 'id';
+        $this->on = Str::snake(Str::singular($attributes['targetEntity']));
         $this->onUpdate = $attributes['onUpdate'] ?? null;
         $this->onDelete = $attributes['onDelete'] ?? null;
     }

@@ -3,6 +3,7 @@
 namespace UcanLab\LaravelDacapo\Migrations;
 
 use Exception;
+use Illuminate\Support\Str;
 use SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 use UcanLab\LaravelDacapo\Storage\Storage;
@@ -29,7 +30,7 @@ class SchemaLoader
         $schemas = $this->getSchemas();
 
         foreach ($schemas as $tableName => $tableAttributes) {
-            $this->tables->add(new Table($tableName, $tableAttributes));
+            $this->tables->add(new Table($tableAttributes['table'] ? Str::slug($tableAttributes['table'], '_') : $tableName, $tableAttributes));
         }
 
         return $this->tables;

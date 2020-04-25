@@ -6,6 +6,12 @@ class Column
 {
     private const RESERVED_COLUMN_TYPE = '__reserved_column_type';
 
+    private $converters = [
+        'bigint' => 'bigInteger',
+        'smallint' => 'smallInteger',
+        'tinyint' => 'tinyInteger',
+    ];
+
     private $name;
     private $type;
     private $args;
@@ -38,7 +44,9 @@ class Column
     {
         $this->name = $name;
 
-        if ($name === 'rememberToken') {
+        if ($name === 'id') {
+            $this->type = 'bigIncrements';
+        } elseif ($name === 'rememberToken') {
             $this->name = self::RESERVED_COLUMN_TYPE;
             $this->type = 'rememberToken';
         } elseif ($name === 'softDeletes') {
@@ -114,6 +122,10 @@ class Column
 
         if ($this->type === 'enum' || $this->type === 'set') {
             return Method::call($this->type, $this->name, (array) $this->args);
+        }
+
+        if (isset($this->converters[$this->type])) {
+            $this->type = $this->converters[$this->type];
         }
 
         return Method::call($this->type, $this->name, ...(array) $this->args);
