@@ -34,9 +34,9 @@ class Table
         $this->engine = $attributes['engine'] ?? '';
         $this->charset = $attributes['charset'] ?? '';
         $this->collation = $attributes['collation'] ?? '';
-        $this->columns = new Columns($attributes['columns'] ?? []);
+        $this->columns = new Columns(($attributes['id'] ?? []) + $attributes['fields'] ?? []);
         $this->indexes = new Indexes($this->name, $attributes['indexes'] ?? []);
-        $this->relations = new Relations($attributes['relations'] ?? []);
+        $this->relations = new Relations($attributes['manyToOne'] ?? []);
     }
 
     /**

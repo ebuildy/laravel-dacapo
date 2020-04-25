@@ -17,8 +17,8 @@ class Index
     {
         $this->tableName = $tableName;
         $this->columns = $attributes['columns'];
-        $this->alias = $attributes['alias'] ?? null;
-        $this->type = $attributes['type'];
+        $this->alias = $attributes['alias'] ?? 'FK_'. uniqid(rand());
+        $this->type = $attributes['type'] ?? 'index';
     }
 
     /**
